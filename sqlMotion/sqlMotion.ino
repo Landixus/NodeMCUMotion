@@ -4,18 +4,18 @@
 #include <ESP8266HTTPClient.h>
 #define USE_SERIAL Serial
 
-const char* ssid     = "xxxxxxxx";
-const char* password = "xxxxxxxx";
+const char* ssid     = "xxxxxxxx"; //your SSID from your router
+const char* password = "xxxxxxxx"; //your password for your router
 
 int calibrationTime = 40;       
 int  interval = 1000; // Wait between dumps
-int pirPin = 4;    //the digital pin connected to the PIR sensor's output
+int pirPin = 4;    //the digital pin connected to the PIR sensor's output here is 4 (D2 used)
 int nPIR_detect;
 
 boolean noMotion = true;
 
 int motion = 2;
-int minSecsBetweenUpdates = 60; // 5 minutes
+int minSecsBetweenUpdates = 60; // wait a bit
 long lastSend = -minSecsBetweenUpdates * 1000l;
 #define USE_SERIAL Serial
 //-------------------------------
@@ -26,7 +26,7 @@ void setup(){
   delay(100);
   pinMode(pirPin, INPUT);
   digitalWrite(pirPin, LOW);
-   //give the sensor some time to calibrate
+   //give the sensor some time to calibrate  some need 1 Minute!
   Serial.print("calibrating sensor ");
   for(int i = 0; i < calibrationTime; i++){
     Serial.print(".");
@@ -84,9 +84,9 @@ void sendData(String motion)    {
             USE_SERIAL.print("[HTTP] begin...\n");
             // configure traged server and url
 
-
+//you need to change stuff here!
               http.begin("http://YOURSITE.DOMAIN/arduino/add_data.php?motionornot=1");  //i use a folder "arduino" on my Webspace
-               http.begin("http://USER:PASS@YOURSITE.DOMAIN/arduino/add_data.php?motionornot=1");  //if you have a .htaccess .htpasswd
+         //      http.begin("http://USER:PASS@YOURSITE.DOMAIN/arduino/add_data.php?motionornot=1");  //if you have a .htaccess .htpasswd
               USE_SERIAL.print("[HTTP] GET...\n");
               // start connection and send HTTP header
                 int httpCode = http.GET();
